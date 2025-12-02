@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// -------------
+// Models
+// --------------
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  userType  UserType @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  events Event[] @relation("AdminEvents")
+  orders Order[]
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String
+  startTime   DateTime
+  price       Decimal  @db.Decimal(10, 2)
+
+  locationName String
+  latitude     Float?
+  longitude    Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Admin Reference
+  adminId String
+  admin   User   @relation("AdminEvents", fields: [adminId], references: [id])
+
+  // Orders
+  orders Order[]
+}
+
+model Order {
+  id String @id @default(cuid())
+
+  userId  String
+  eventId String
+
+  status       OrderStatus @default(PENDING)
+  purchaseTime DateTime    @default(now())
+
+  // Stripe Fields
+  paymentIntentId String?
+  clientSecret    String?
+  paymentId       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+
+  // User cannot purchase same activity twice
+  @@unique([userId, eventId])
+}
+
+// -----------
+// Enums
+// -----------
+enum UserType {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  REQUIRES_ACTION
+  PAID
+  FAILED
+  REFUNDED
+  CANCELLED
+}
