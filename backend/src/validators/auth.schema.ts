@@ -1,0 +1,14 @@
+import { z } from "zod";
+
+export const signupSchema = z.object({
+  email: z.email(),
+  name: z.string().min(1, "Name is required"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(/[A-Z]/, "Password must include at least one uppercase letter")
+    .regex(/[a-z]/, "Password must include at least one lowercase letter")
+    .regex(/\d/, "Password must include at least one number"),
+});
+
+export type SignupSchema = z.infer<typeof signupSchema>;
