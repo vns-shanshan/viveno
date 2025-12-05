@@ -46,7 +46,7 @@ export const protectRoute = async (
       }
 
       // Attach user to request object
-      (req as any).user = user;
+      req.user = user;
 
       next();
     } catch (error: any) {
