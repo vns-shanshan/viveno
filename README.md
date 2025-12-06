@@ -39,3 +39,7 @@ npx prisma migrate dev --name add-price-to-event
 # Todo's
 
 - add global error middleware so we don't have to do try and catch for every endpoint
+
+# Strech Goals
+
+- Add a geolocation feature that converts a user-entered address into latitude and longitude, then stores those coordinates in the database.
