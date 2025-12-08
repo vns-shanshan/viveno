@@ -1,6 +1,9 @@
 import express from "express";
 import { validate } from "../middleware/validate.js";
-import { createEventSchema } from "../validators/event.schema.js";
+import {
+  createEventSchema,
+  updateEventSchema,
+} from "../validators/event.schema.js";
 import { upload } from "../middleware/upload.middleware.js";
 
 import {
@@ -24,7 +27,14 @@ router.post(
   validate(createEventSchema),
   createEvent
 );
-router.put("/:id", updateEvent);
-router.delete("/:id", deleteEvent);
+router.put(
+  "/:id",
+  protectRoute,
+  adminRoute,
+  upload.single("image"),
+  validate(updateEventSchema),
+  updateEvent
+);
+router.delete("/:id", protectRoute, adminRoute, deleteEvent);
 
 export default router;

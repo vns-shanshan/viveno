@@ -18,4 +18,7 @@ export const createEventSchema = z.object({
   locationName: z.string().min(1, "Location name is required"),
 });
 
+export const updateEventSchema = createEventSchema.partial();
+
 export type CreateEventSchema = z.infer<typeof createEventSchema>;
+export type UpdateEventSchema = z.infer<typeof updateEventSchema>;

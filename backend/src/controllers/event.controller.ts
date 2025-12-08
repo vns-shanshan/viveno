@@ -91,12 +91,59 @@ export const createEvent = async (
   }
 };
 
-export const updateEvent = async (req: Request, res: Response) => {
+export const updateEvent = async (req: Request<EventParams>, res: Response) => {
   try {
-  } catch (error) {}
+    const { id } = req.params;
+
+    const foundEvent = await prisma.event.findUnique({
+      where: { id },
+    });
+
+    if (!foundEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    if (req.file?.path) {
+      req.body.imageUrl = req.file.path;
+    }
+
+    const updatedEvent = await prisma.event.update({
+      where: { id },
+      data: req.body,
+    });
+
+    res.json({ event: updatedEvent });
+  } catch (error: any) {
+    const message =
+      error instanceof Error ? error.message : "Internal server error";
+
+    console.log("Error in updateEvent controller:", message);
+    res.status(500).json({ message });
+  }
 };
 
-export const deleteEvent = async (req: Request, res: Response) => {
+export const deleteEvent = async (req: Request<EventParams>, res: Response) => {
   try {
-  } catch (error) {}
+    const { id } = req.params;
+
+    const foundEvent = await prisma.event.findUnique({
+      where: { id },
+    });
+
+    if (!foundEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    await prisma.event.delete({
+      where: { id },
+    });
+
+    res.json({ message: "Event deleted successfully" });
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Internal server error";
+
+    console.log("Error in deleteEvent controller:", message);
+    res.status(500).json({ message });
+  }
 };
