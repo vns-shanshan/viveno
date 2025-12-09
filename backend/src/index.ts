@@ -1,3 +1,5 @@
+import type { ErrorRequestHandler } from "express";
+
 import express from "express";
 import cors from "cors";
 import prisma from "./prisma.js";
@@ -19,6 +21,18 @@ app.use("/events", eventRoutes);
 app.get("/", (req, res) => {
   res.send("Viveno backend is running!");
 });
+
+// Multer error handling
+const multerErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  if (err.code === "LIMIT_FILE_SIZE") {
+    return res
+      .status(400)
+      .json({ message: "File too large. Max 5MB allowed." });
+  }
+  next(err);
+};
+
+app.use(multerErrorHandler);
 
 const PORT = process.env.PORT || 5000;
 

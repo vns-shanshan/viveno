@@ -1,17 +1,10 @@
 import type { Request, Response } from "express";
 import prisma from "../prisma.js";
+import type { CreateEventSchema } from "../validators/event.schema.js";
+import { handleControllerError } from "../utils/errorHandler.js";
 
 type EventParams = {
   id: string;
-};
-
-type CreateEventBody = {
-  title?: string;
-  description?: string;
-  imageUrl?: string;
-  startTime?: string;
-  price?: number;
-  locationName?: string;
 };
 
 export const getAllEvents = async (req: Request, res: Response) => {
@@ -19,11 +12,7 @@ export const getAllEvents = async (req: Request, res: Response) => {
     const events = await prisma.event.findMany();
     res.json({ events });
   } catch (error: any) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-
-    console.log("Error in getAllEvents controller:", message);
-    res.status(500).json({ message });
+    handleControllerError(error, res, "getAllEvents");
   }
 };
 
@@ -40,27 +29,16 @@ export const getEvent = async (req: Request<EventParams>, res: Response) => {
 
     res.json({ event });
   } catch (error: any) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-
-    console.log("Error in getEvent controller:", message);
-    res.status(500).json({ message });
+    handleControllerError(error, res, "getEvent");
   }
 };
 
 export const createEvent = async (
-  req: Request<{}, unknown, CreateEventBody>,
+  req: Request<{}, unknown, CreateEventSchema>,
   res: Response
 ) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
     const { title, description, startTime, price, locationName } = req.body;
-    if (!title || !description || !startTime || !price || !locationName) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
 
     const imageUrl = req.file?.path; // Cloudinary URL
     if (!imageUrl) {
@@ -76,18 +54,14 @@ export const createEvent = async (
         price,
         locationName,
         admin: {
-          connect: { id: req.user.id },
+          connect: { id: req.user!.id },
         },
       },
     });
 
     res.status(201).json({ event });
   } catch (error: any) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-
-    console.log("Error in createEvent controller:", message);
-    res.status(500).json({ message });
+    handleControllerError(error, res, "createEvent");
   }
 };
 
@@ -114,11 +88,7 @@ export const updateEvent = async (req: Request<EventParams>, res: Response) => {
 
     res.json({ event: updatedEvent });
   } catch (error: any) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-
-    console.log("Error in updateEvent controller:", message);
-    res.status(500).json({ message });
+    handleControllerError(error, res, "updateEvent");
   }
 };
 
@@ -140,10 +110,6 @@ export const deleteEvent = async (req: Request<EventParams>, res: Response) => {
 
     res.json({ message: "Event deleted successfully" });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-
-    console.log("Error in deleteEvent controller:", message);
-    res.status(500).json({ message });
+    handleControllerError(error, res, "deleteEvent");
   }
 };

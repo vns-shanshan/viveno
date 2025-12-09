@@ -3,6 +3,7 @@ import prisma from "../prisma.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { redis } from "../lib/upstashClient.js";
+import { handleControllerError } from "../utils/errorHandler.js";
 
 const ACCESS_EXPIRES = "15m"; // JWT access token
 const REFRESH_EXPIRES = "7d"; // JWT refresh token
@@ -101,11 +102,7 @@ export const signup = async (
       .status(201)
       .json({ id: newUser.id, email: newUser.email, name: newUser.name });
   } catch (error: any) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-
-    console.log("Error in signup controller:", message);
-    res.status(500).json({ message });
+    handleControllerError(error, res, "signup");
   }
 };
 
@@ -145,11 +142,7 @@ export const login = async (
       userType: user.userType,
     });
   } catch (error: any) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-
-    console.log("Error in login controller:", message);
-    res.status(500).json({ message });
+    handleControllerError(error, res, "login");
   }
 };
 
@@ -171,11 +164,7 @@ export const logout = async (req: Request, res: Response) => {
       res.json({ message: "Logout successful" });
     }
   } catch (error: any) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-
-    console.log("Error in logout controller:", message);
-    res.status(500).json({ message });
+    handleControllerError(error, res, "logout");
   }
 };
 
@@ -218,11 +207,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 
     res.json({ message: "Access token refreshed" });
   } catch (error: any) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-
-    console.log("Error in refreshToken controller:", message);
-    res.status(500).json({ message });
+    handleControllerError(error, res, "refreshToken");
   }
 };
 
@@ -230,10 +215,6 @@ export const getMe = async (req: Request, res: Response) => {
   try {
     res.json(req.user);
   } catch (error: any) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-
-    console.log("Error in getMe controller:", message);
-    res.status(500).json({ message });
+    handleControllerError(error, res, "getMe");
   }
 };

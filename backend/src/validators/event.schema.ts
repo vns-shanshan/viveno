@@ -9,7 +9,6 @@ export const createEventSchema = z.object({
     .string()
     .min(1, "Description is required")
     .max(2000, "Description cannot exceed 2000 characters"),
-  imageUrl: z.url({ message: "Invalid image URL" }).optional(),
   startTime: z.iso.datetime({ message: "Invalid date format" }),
   price: z.coerce
     .number({ message: "Price must be a number" })
@@ -18,7 +17,11 @@ export const createEventSchema = z.object({
   locationName: z.string().min(1, "Location name is required"),
 });
 
-export const updateEventSchema = createEventSchema.partial();
+export const updateEventSchema = createEventSchema
+  .extend({
+    imageUrl: z.url({ message: "Invalid image URL" }).optional(),
+  })
+  .partial();
 
 export type CreateEventSchema = z.infer<typeof createEventSchema>;
 export type UpdateEventSchema = z.infer<typeof updateEventSchema>;
