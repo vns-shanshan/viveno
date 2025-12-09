@@ -9,7 +9,8 @@ import {
 
 const router = express.Router();
 
-router.post("/", createOrder);
+// add a createOrder zod schema and validate middleware later
+router.post("/", protectRoute, createOrder);
 router.get("/", protectRoute, getMyOrders);
 router.get("/:id", getOrder);
 

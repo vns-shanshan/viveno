@@ -9,7 +9,16 @@ type EventParams = {
 
 export const getAllEvents = async (req: Request, res: Response) => {
   try {
-    const events = await prisma.event.findMany();
+    const now = new Date();
+
+    const events = await prisma.event.findMany({
+      where: {
+        startTime: {
+          gt: now,
+        }, // Only future events
+      },
+    });
+
     res.json({ events });
   } catch (error: any) {
     handleControllerError(error, res, "getAllEvents");
