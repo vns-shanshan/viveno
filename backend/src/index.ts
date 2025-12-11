@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.route.js";
 import eventRoutes from "./routes/event.route.js";
+import adminRoutes from "./routes/admin.route.js";
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
+app.use("/admin", adminRoutes);
 
 // Test route
 app.get("/", (req, res) => {
