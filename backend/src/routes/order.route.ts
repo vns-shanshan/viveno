@@ -1,6 +1,9 @@
 import express from "express";
+import { validate } from "../middleware/validate.js";
 
 import { protectRoute } from "../middleware/auth.middleware.js";
+import { createOrderSchema } from "../validators/order.schema.js";
+
 import {
   createOrder,
   getMyOrders,
@@ -9,9 +12,8 @@ import {
 
 const router = express.Router();
 
-// add a createOrder zod schema and validate middleware later
-router.post("/", protectRoute, createOrder);
+router.post("/", protectRoute, validate(createOrderSchema), createOrder);
 router.get("/", protectRoute, getMyOrders);
-router.get("/:id", getOrder);
+router.get("/:id", protectRoute, getOrder);
 
 export default router;

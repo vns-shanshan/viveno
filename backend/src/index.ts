@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
 import eventRoutes from "./routes/event.route.js";
 import orderRoutes from "./routes/order.route.js";
+import { globalErrorHandler } from "./utils/globalErrorHandler.js";
 
 const app = express();
 app.use(cors());
@@ -35,6 +36,7 @@ const multerErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 };
 
 app.use(multerErrorHandler);
+app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 5000;
 
