@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,9 +6,6 @@ datasource db {
   provider = "postgresql"
 }
 
-// -------------
-// Models
-// --------------
 model User {
   id        String   @id @default(cuid())
   name      String
@@ -23,63 +14,45 @@ model User {
   userType  UserType @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // Relations
-  events Event[] @relation("AdminEvents")
-  orders Order[]
+  events    Event[]  @relation("AdminEvents")
+  orders    Order[]
 }
 
 model Event {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  imageUrl    String
-  startTime   DateTime
-  price       Decimal  @db.Decimal(10, 2)
-
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  imageUrl     String
+  startTime    DateTime
+  price        Decimal  @db.Decimal(10, 2)
   locationName String
   latitude     Float?
   longitude    Float?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Admin Reference
-  adminId String
-  admin   User   @relation("AdminEvents", fields: [adminId], references: [id])
-
-  // Orders
-  orders Order[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  adminId      String
+  admin        User     @relation("AdminEvents", fields: [adminId], references: [id])
+  orders       Order[]
 }
 
 model Order {
-  id String @id @default(cuid())
-
-  userId  String
-  eventId String
-
-  status       OrderStatus @default(PENDING)
-  purchaseTime DateTime    @default(now())
-
-  // Stripe Fields
+  id              String      @id @default(cuid())
+  userId          String
+  eventId         String
+  status          OrderStatus @default(PENDING)
+  paymentCompletedAt DateTime?
   paymentIntentId String?
   clientSecret    String?
-  paymentId       String?
+  quantity    Int         @default(1)
+  // paymentId       String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  event           Event       @relation(fields: [eventId], references: [id])
+  user            User        @relation(fields: [userId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  user  User  @relation(fields: [userId], references: [id])
-  event Event @relation(fields: [eventId], references: [id])
-
-  // User cannot purchase same activity twice
   @@unique([userId, eventId])
 }
 
-// -----------
-// Enums
-// -----------
 enum UserType {
   USER
   ADMIN
