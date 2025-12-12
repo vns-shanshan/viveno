@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.route.js";
 import eventRoutes from "./routes/event.route.js";
+import adminRoutes from "./routes/admin.route.js";
 import orderRoutes from "./routes/order.route.js";
 import { globalErrorHandler } from "./utils/globalErrorHandler.js";
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
+app.use("/admin", adminRoutes);
 app.use("/orders", orderRoutes);
 
 // Test route
