@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
 import eventRoutes from "./routes/event.route.js";
 import adminRoutes from "./routes/admin.route.js";
+import orderRoutes from "./routes/order.route.js";
+import { globalErrorHandler } from "./utils/globalErrorHandler.js";
 
 const app = express();
 app.use(cors());
@@ -18,11 +20,12 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
 app.use("/admin", adminRoutes);
+app.use("/orders", orderRoutes);
 
 // Test route
-app.get("/", (req, res) => {
-  res.send("Viveno backend is running!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Viveno backend is running!");
+// });
 
 // Multer error handling
 const multerErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
@@ -35,6 +38,7 @@ const multerErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 };
 
 app.use(multerErrorHandler);
+app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 5000;
 
