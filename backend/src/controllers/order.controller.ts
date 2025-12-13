@@ -66,7 +66,6 @@ export const createOrder = async (req: Request, res: Response) => {
       quantity,
       status: "PENDING",
       paymentIntentId: paymentIntent.id,
-      clientSecret: paymentIntent.client_secret,
     },
   });
 
