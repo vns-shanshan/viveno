@@ -41,8 +41,7 @@ model Order {
   eventId         String
   status          OrderStatus @default(PENDING)
   paymentCompletedAt DateTime?
-  paymentIntentId String?
-  clientSecret    String?
+  paymentIntentId String? @unique
   quantity    Int         @default(1)
   // paymentId       String?
   createdAt       DateTime    @default(now())
