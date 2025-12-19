@@ -39,6 +39,7 @@ npx prisma migrate dev --name add-price-to-event
 # Todo's
 
 - add global error middleware so we don't have to do try and catch for every endpoint
+- Edit Dark mode color to match design later
 
 # Strech Goals
 
