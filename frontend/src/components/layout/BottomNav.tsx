@@ -10,7 +10,7 @@ export const BottomNav = () => {
 
         return (
           <Link key={item.label} to={item.to}>
-            <Icon />
+            <Icon className="text-primary size-7" />
           </Link>
         );
       })}
