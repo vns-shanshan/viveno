@@ -26,6 +26,8 @@ type AuthState = {
 
   signup: (data: SignupInput) => Promise<User>;
   login: (data: LoginInput) => Promise<User>;
+  logout: () => Promise<void>;
+  checkAuth: () => Promise<User | null>;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -74,6 +76,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ checkingAuth: true });
 
     try {
+      // console.log("Hello");
       const res = await axiosInstance.get("/auth/me");
 
       set({ user: res.data, checkingAuth: false });

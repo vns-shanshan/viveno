@@ -150,9 +150,10 @@ export const logout = async (req: Request, res: Response) => {
 
     res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
-
     res.json({ message: "Logout successful" });
   }
+
+  res.json({ message: "User not logged in." });
 };
 
 // --------------------------
