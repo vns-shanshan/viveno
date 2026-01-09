@@ -35,14 +35,14 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="grid grid-cols-1 min-h-screen w-full md:grid-cols-2">
+    <div className="grid grid-cols-1 flex-1 w-full md:grid-cols-2">
       <div className="hidden md:flex flex-col items-center justify-center h-full bg-neutral">
         <h1 className="text-6xl font-extrabold text-primary text-center">
           Welcome Back
         </h1>
       </div>
 
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex items-center justify-center">
         <div className="w-full max-w-sm px-4">
           {/* Title */}
           <h1 className="mb-10 text-center text-2xl font-semibold text-primary">
@@ -53,6 +53,7 @@ export default function LoginPage() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
+              noValidate
               className="flex flex-col gap-6"
             >
               <FormField
