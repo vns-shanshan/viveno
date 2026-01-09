@@ -42,6 +42,11 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-primary-100: var(--primary-100);
+  --color-primary-300: var(--primary-300);
+  --color-neutral: var(--neutral);
+  --color-secondary: var(--secondary);
 }
 
 :root {
@@ -80,8 +85,10 @@
 
   --main: #f7f7f7;
   --primary: #799eff;
+  --primary-100: #cfdcff;
+  --primary-300: #a4bdff;
   --secondary: #ffbc4c;
-  --netural: #feffc4;
+  --neutral: #feffc4;
   --white: #ffffff;
 
   --shadow-nav-bottom: 0 -1px 4px rgba(177, 199, 255, 0.25);
