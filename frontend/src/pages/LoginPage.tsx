@@ -4,18 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginSchema } from "../validator/auth.schema";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { Mail, Lock, LogIn } from "lucide-react";
 
 import { useAuthStore } from "@/stores/useAuthStore";
+import AuthInput from "@/components/ui/AuthInput";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -56,52 +49,22 @@ export default function LoginPage() {
               noValidate
               className="flex flex-col gap-6"
             >
-              <FormField
+              <AuthInput
                 control={form.control}
                 name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="ml-2 font-medium text-primary-300">
-                      Email
-                    </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-300 peer-focus:text-primary size-5" />
-                        <Input
-                          placeholder="you@example.com"
-                          type="email"
-                          className="pl-10 text-md border-primary-100 focus-visible:border-primary-300 focus-visible:ring-2 placeholder:text-gray-300"
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label="Email"
+                placeholder="you@example.com"
+                type="email"
+                Icon={Mail}
               />
 
-              <FormField
+              <AuthInput
                 control={form.control}
                 name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="ml-2 font-medium text-primary-300">
-                      Password
-                    </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-300 peer-focus:text-primary size-5" />
-                        <Input
-                          placeholder="••••••••"
-                          type="password"
-                          {...field}
-                          className="pl-10 text-md border-primary-100 focus-visible:border-primary-300 focus-visible:ring-2 placeholder:text-gray-300"
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label="Password"
+                placeholder="••••••••"
+                type="password"
+                Icon={Lock}
               />
 
               <Button
