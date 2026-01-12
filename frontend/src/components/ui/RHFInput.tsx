@@ -10,7 +10,7 @@ import {
 } from "./form";
 import { Input } from "./input";
 
-interface AuthInputProps<T extends FieldValues> {
+interface RHFInputProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
   label: string;
@@ -19,14 +19,14 @@ interface AuthInputProps<T extends FieldValues> {
   Icon: LucideIcon;
 }
 
-export default function AuthInput<T extends FieldValues>({
+export default function RHFInput<T extends FieldValues>({
   control,
   name,
   label,
   placeholder,
   type = "text",
   Icon,
-}: AuthInputProps<T>) {
+}: RHFInputProps<T>) {
   return (
     <FormField
       control={control}

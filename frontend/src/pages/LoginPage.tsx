@@ -8,7 +8,7 @@ import { Form } from "@/components/ui/form";
 import { Mail, Lock, LogIn } from "lucide-react";
 
 import { useAuthStore } from "@/stores/useAuthStore";
-import AuthInput from "@/components/ui/AuthInput";
+import RHFInput from "@/components/ui/RHFInput";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ export default function LoginPage() {
               noValidate
               className="flex flex-col gap-6"
             >
-              <AuthInput
+              <RHFInput
                 control={form.control}
                 name="email"
                 label="Email"
@@ -58,7 +58,7 @@ export default function LoginPage() {
                 Icon={Mail}
               />
 
-              <AuthInput
+              <RHFInput
                 control={form.control}
                 name="password"
                 label="Password"

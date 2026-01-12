@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 import { Mail, User, Lock, UserPlus } from "lucide-react";
 
-import AuthInput from "@/components/ui/AuthInput";
+import RHFInput from "@/components/ui/RHFInput";
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ function SignupPage() {
               noValidate
               className="flex flex-col gap-6"
             >
-              <AuthInput
+              <RHFInput
                 control={form.control}
                 name="name"
                 label="Full Name"
@@ -53,7 +53,7 @@ function SignupPage() {
                 type="text"
                 Icon={User}
               />
-              <AuthInput
+              <RHFInput
                 control={form.control}
                 name="email"
                 label="Email"
@@ -61,7 +61,7 @@ function SignupPage() {
                 type="email"
                 Icon={Mail}
               />
-              <AuthInput
+              <RHFInput
                 control={form.control}
                 name="password"
                 label="Password"
@@ -69,7 +69,7 @@ function SignupPage() {
                 type="password"
                 Icon={Lock}
               />
-              <AuthInput
+              <RHFInput
                 control={form.control}
                 name="confirmPassword"
                 label="Confirm Password"
