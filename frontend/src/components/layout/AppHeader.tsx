@@ -1,9 +1,25 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Sprout } from "lucide-react";
 
-import { navItems } from "@/components/layout/navItems";
+import { navItems } from "@/config/navItems";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { getVisibleNavItems } from "@/config/navUtils";
 
 export const AppHeader = () => {
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate({ to: "/login", replace: true });
+  };
+
+  const visibleItems = getVisibleNavItems(
+    navItems,
+    Boolean(user),
+    handleLogout
+  );
+
   return (
     <header className="h-16 md:h-20 flex items-center justify-between border-b bg-primary px-6">
       <div className="flex items-center gap-2 md:gap-4">
@@ -13,16 +29,27 @@ export const AppHeader = () => {
         </span>
       </div>
 
+      {/* Top Navigation (Desktop Only) */}
       <nav className="hidden md:flex gap-6">
-        {navItems.map((item) => (
-          <Link
-            key={item.label}
-            to={item.to}
-            className="text-white text-lg font-medium"
-          >
-            {item.label}
-          </Link>
-        ))}
+        {visibleItems.map((item) =>
+          item.to ? (
+            <Link
+              key={item.label}
+              to={item.to}
+              className="text-white text-lg font-medium hover:underline"
+            >
+              {item.label}
+            </Link>
+          ) : (
+            <button
+              key={item.label}
+              onClick={item.onClick}
+              className="text-white text-lg font-medium hover:underline"
+            >
+              {item.label}
+            </button>
+          )
+        )}
       </nav>
     </header>
   );
