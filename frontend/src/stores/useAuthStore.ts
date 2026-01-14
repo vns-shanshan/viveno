@@ -6,6 +6,7 @@ type User = {
   id: string;
   email: string;
   name: string;
+  userType: "USER" | "ADMIN";
 };
 
 type SignupInput = {
@@ -19,7 +20,7 @@ type LoginInput = {
   password: string;
 };
 
-type AuthState = {
+export type AuthState = {
   user: User | null;
   loading: boolean;
   checkingAuth: boolean;

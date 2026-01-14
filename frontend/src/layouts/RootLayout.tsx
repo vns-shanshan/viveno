@@ -12,16 +12,12 @@ export function RootLayout() {
     checkAuth();
   }, [checkAuth]);
 
-  if (checkingAuth) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="h-dvh flex flex-col bg-main">
       <AppHeader />
 
       <main className="flex flex-1 overflow-y-hidden">
-        <Outlet />
+        {checkingAuth ? <div>Loading...</div> : <Outlet />}
       </main>
 
       <BottomNav />
