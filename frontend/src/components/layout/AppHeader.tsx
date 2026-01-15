@@ -17,6 +17,7 @@ export const AppHeader = () => {
   const visibleItems = getVisibleNavItems(
     navItems,
     Boolean(user),
+    user?.userType,
     handleLogout
   );
 
@@ -31,8 +32,24 @@ export const AppHeader = () => {
 
       {/* Top Navigation (Desktop Only) */}
       <nav className="hidden md:flex gap-6">
-        {visibleItems.map((item) =>
-          item.to ? (
+        {visibleItems.map((item) => {
+          const isUserRoute = item.to === "/$userId";
+          const label = isUserRoute && user ? user.name : item.label;
+
+          if (isUserRoute && user) {
+            return (
+              <Link
+                key={label}
+                to="/$userId"
+                params={{ userId: user.id }}
+                className="text-white text-lg font-medium hover:underline"
+              >
+                {label}
+              </Link>
+            );
+          }
+
+          return item.to ? (
             <Link
               key={item.label}
               to={item.to}
@@ -48,8 +65,8 @@ export const AppHeader = () => {
             >
               {item.label}
             </button>
-          )
-        )}
+          );
+        })}
       </nav>
     </header>
   );

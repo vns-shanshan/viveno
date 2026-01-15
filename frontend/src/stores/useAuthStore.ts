@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { AxiosError } from "axios";
 
 import axiosInstance from "@/lib/axios";
 
@@ -49,9 +50,15 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user: res.data, loading: false });
 
       return res.data;
-    } catch (error) {
+    } catch (error: unknown) {
       set({ loading: false });
-      throw error;
+
+      const axiosError = error as AxiosError<{ message?: string }>;
+      if (axiosError.response?.status === 409) {
+        throw new Error("Email already exists");
+      }
+
+      throw new Error("An error occurred during signup");
     }
   },
 
@@ -67,9 +74,15 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user: res.data, loading: false });
 
       return res.data;
-    } catch (error) {
+    } catch (error: unknown) {
       set({ loading: false });
-      throw error;
+
+      const axiosError = error as AxiosError<{ message?: string }>;
+      if (axiosError.response?.status === 401) {
+        throw new Error("Invalid email or password");
+      }
+
+      throw new Error("An error occurred during login");
     }
   },
 

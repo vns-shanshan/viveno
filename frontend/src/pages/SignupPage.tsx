@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-hot-toast";
 
 import { signupSchema, type SignupSchema } from "@/validator/auth.schema";
 import { useAuthStore } from "@/stores/useAuthStore";
@@ -26,8 +27,13 @@ function SignupPage() {
   });
 
   const handleSubmit = async (formData: SignupSchema) => {
-    await signup(formData);
-    navigate({ to: "/" });
+    try {
+      await signup(formData);
+      navigate({ to: "/" });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Login failed";
+      toast.error(message);
+    }
   };
   return (
     <div className="grid grid-cols-1 flex-1 w-full md:grid-cols-2">

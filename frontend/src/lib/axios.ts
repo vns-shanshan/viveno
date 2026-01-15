@@ -9,15 +9,23 @@ const axiosConfig = {
 
 const axiosInstance = axios.create(axiosConfig);
 
+// Shared refresh to dedupe simultaneous 401s and avoid multiple refresh calls.
 let refreshPromise: Promise<void> | null = null;
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const requestUrl = String(originalRequest?.url || "");
+    const isAuthRequest =
+      requestUrl.includes("/auth/login") || requestUrl.includes("/auth/signup");
 
     // only handle 401 error once per request
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !isAuthRequest
+    ) {
       originalRequest._retry = true;
 
       try {

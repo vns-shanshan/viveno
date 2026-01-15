@@ -1,5 +1,6 @@
 import { Outlet } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 import AppHeader from "@/components/layout/AppHeader";
 import BottomNav from "@/components/layout/BottomNav";
@@ -21,6 +22,8 @@ export function RootLayout() {
       </main>
 
       <BottomNav />
+
+      <Toaster />
     </div>
   );
 }
