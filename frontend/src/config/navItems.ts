@@ -22,10 +22,9 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   { label: "Home", to: "/", icon: House, auth: "auth" },
+  { label: "About", to: "/about", icon: Book, auth: "public" },
   { label: "Login", to: "/login", icon: LogIn, auth: "guest" },
   { label: "Sign Up", to: "/signup", icon: UserRoundPlus, auth: "guest" },
-  { label: "Logout", icon: LogOut, auth: "auth", onClick: () => {} },
-  { label: "About", to: "/about", icon: Book, auth: "public" },
   {
     label: "Admin",
     to: "/admin",
@@ -40,4 +39,5 @@ export const navItems: NavItem[] = [
     auth: "auth",
     role: ["USER"],
   },
+  { label: "Logout", icon: LogOut, auth: "auth", onClick: () => {} },
 ];

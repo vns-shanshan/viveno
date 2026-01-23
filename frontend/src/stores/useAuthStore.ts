@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import type { AxiosError } from "axios";
 
-import axiosInstance from "@/lib/axios";
+import { publicAxios } from "@/lib/axios/axios.public";
+import { authedAxios } from "@/lib/axios/axios.authed";
 
 type User = {
   id: string;
@@ -41,7 +42,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ loading: true });
 
     try {
-      const res = await axiosInstance.post("/auth/signup", {
+      const res = await publicAxios.post("/auth/signup", {
         name,
         email,
         password,
@@ -66,7 +67,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ loading: true });
 
     try {
-      const res = await axiosInstance.post("/auth/login", {
+      const res = await publicAxios.post("/auth/login", {
         email,
         password,
       });
@@ -91,7 +92,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     try {
       // console.log("Hello");
-      const res = await axiosInstance.get("/auth/me");
+      const res = await authedAxios.get("/auth/me");
 
       set({ user: res.data, checkingAuth: false });
 
@@ -104,7 +105,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: async () => {
     try {
-      await axiosInstance.post("/auth/logout");
+      await publicAxios.post("/auth/logout");
     } finally {
       set({ user: null });
     }
