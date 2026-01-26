@@ -98,7 +98,12 @@ export const signup = async (
 
   res
     .status(201)
-    .json({ id: newUser.id, email: newUser.email, name: newUser.name });
+    .json({
+      id: newUser.id,
+      email: newUser.email,
+      name: newUser.name,
+      userType: newUser.userType,
+    });
 };
 
 export const login = async (

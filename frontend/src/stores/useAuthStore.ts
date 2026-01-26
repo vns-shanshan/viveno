@@ -1,11 +1,14 @@
 import { create } from "zustand";
+import type { AxiosError } from "axios";
 
-import axiosInstance from "@/lib/axios";
+import { publicAxios } from "@/lib/axios/axios.public";
+import { authedAxios } from "@/lib/axios/axios.authed";
 
 type User = {
   id: string;
   email: string;
   name: string;
+  userType: "USER" | "ADMIN";
 };
 
 type SignupInput = {
@@ -19,7 +22,7 @@ type LoginInput = {
   password: string;
 };
 
-type AuthState = {
+export type AuthState = {
   user: User | null;
   loading: boolean;
   checkingAuth: boolean;
@@ -39,7 +42,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ loading: true });
 
     try {
-      const res = await axiosInstance.post("/auth/signup", {
+      const res = await publicAxios.post("/auth/signup", {
         name,
         email,
         password,
@@ -48,9 +51,15 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user: res.data, loading: false });
 
       return res.data;
-    } catch (error) {
+    } catch (error: unknown) {
       set({ loading: false });
-      throw error;
+
+      const axiosError = error as AxiosError<{ message?: string }>;
+      if (axiosError.response?.status === 409) {
+        throw new Error("Email already exists");
+      }
+
+      throw new Error("An error occurred during signup");
     }
   },
 
@@ -58,7 +67,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ loading: true });
 
     try {
-      const res = await axiosInstance.post("/auth/login", {
+      const res = await publicAxios.post("/auth/login", {
         email,
         password,
       });
@@ -66,9 +75,15 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user: res.data, loading: false });
 
       return res.data;
-    } catch (error) {
+    } catch (error: unknown) {
       set({ loading: false });
-      throw error;
+
+      const axiosError = error as AxiosError<{ message?: string }>;
+      if (axiosError.response?.status === 401) {
+        throw new Error("Invalid email or password");
+      }
+
+      throw new Error("An error occurred during login");
     }
   },
 
@@ -77,7 +92,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     try {
       // console.log("Hello");
-      const res = await axiosInstance.get("/auth/me");
+      const res = await authedAxios.get("/auth/me");
 
       set({ user: res.data, checkingAuth: false });
 
@@ -90,7 +105,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: async () => {
     try {
-      await axiosInstance.post("/auth/logout");
+      await publicAxios.post("/auth/logout");
     } finally {
       set({ user: null });
     }

@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
+import { Mail, Lock, LogIn } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginSchema } from "../validator/auth.schema";
+import { toast } from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { Mail, Lock, LogIn } from "lucide-react";
 
 import { useAuthStore } from "@/stores/useAuthStore";
 import RHFInput from "@/components/ui/RHFInput";
@@ -23,8 +24,13 @@ export default function LoginPage() {
   });
 
   const handleSubmit = async (formData: LoginSchema) => {
-    await login(formData);
-    navigate({ to: "/" });
+    try {
+      await login(formData);
+      navigate({ to: "/" });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Login failed";
+      toast.error(message);
+    }
   };
 
   return (

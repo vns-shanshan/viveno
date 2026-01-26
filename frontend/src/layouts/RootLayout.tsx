@@ -1,5 +1,6 @@
 import { Outlet } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 import AppHeader from "@/components/layout/AppHeader";
 import BottomNav from "@/components/layout/BottomNav";
@@ -12,19 +13,17 @@ export function RootLayout() {
     checkAuth();
   }, [checkAuth]);
 
-  if (checkingAuth) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="h-dvh flex flex-col bg-main">
       <AppHeader />
 
       <main className="flex flex-1 overflow-y-hidden">
-        <Outlet />
+        {checkingAuth ? <div>Loading...</div> : <Outlet />}
       </main>
 
       <BottomNav />
+
+      <Toaster />
     </div>
   );
 }
