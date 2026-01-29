@@ -16,23 +16,27 @@ type EventCardProps = {
 
 export default function EventCard({ event }: EventCardProps) {
   return (
-    <Card className="relative w-full pt-0 overflow-hidden">
-      <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
+    <Card className="relative w-full p-0 gap-4 overflow-hidden">
+      {/* Image section */}
       <img
         src={event.imageUrl}
         alt="Event cover"
-        className="relative z-20 aspect-video w-full object-cover   dark:brightness-40"
+        className="z-20 w-full object-cover h-40"
       />
-      <CardHeader>
-        <CardTitle>{event.title}</CardTitle>
-        <CardDescription>${event.price}</CardDescription>
-      </CardHeader>
-      <CardFooter>
-        <Button className="w-full bg-secondary font-semibold">
-          <ShoppingCart className="mr-1" />
-          Add To Cart
-        </Button>
-      </CardFooter>
+
+      {/* Content */}
+      <div className="flex flex-col justify-between flex-1 gap-1">
+        <CardHeader className="pb-1 px-5">
+          <CardTitle>{event.title}</CardTitle>
+          <CardDescription>${event.price}</CardDescription>
+        </CardHeader>
+        <CardFooter className="px-4 pb-4">
+          <Button className="w-full bg-secondary font-semibold hover:bg-secondary/80">
+            <ShoppingCart className="mr-1" />
+            Add To Cart
+          </Button>
+        </CardFooter>
+      </div>
     </Card>
   );
 }
