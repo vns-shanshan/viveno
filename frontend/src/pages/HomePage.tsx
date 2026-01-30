@@ -1,4 +1,4 @@
-import EventCard from "@/components/ui/EventCard";
+import EventCard from "@/features/home/EventCard";
 import { useEventStore } from "@/stores/useEventStore";
 import { useEffect } from "react";
 
@@ -10,7 +10,7 @@ function HomePage() {
   }, [getAllEvents]);
 
   return (
-    <div className="flex-1 w-full overflow-y-auto p-6 md:mx-12 no-scrollbar ">
+    <div className="flex-1 w-full  p-6 md:mx-20">
       <h1 className="mb-10 text-primary font-semibold text-2xl md:text-3xl md:mt-10 px-6 md:px-1">
         Explore Activities
       </h1>

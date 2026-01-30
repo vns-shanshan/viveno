@@ -17,7 +17,7 @@ export function RootLayout() {
     <div className="h-dvh flex flex-col bg-main">
       <AppHeader />
 
-      <main className="flex flex-1 overflow-y-hidden">
+      <main className="flex flex-1 overflow-y-auto">
         {checkingAuth ? <div>Loading...</div> : <Outlet />}
       </main>
 
